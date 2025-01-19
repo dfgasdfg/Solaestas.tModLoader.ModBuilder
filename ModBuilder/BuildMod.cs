@@ -63,6 +63,11 @@ public class BuildMod : Microsoft.Build.Utilities.Task
 		tmod.AddFile($"{ModName}.pdb", DebugSymbol.ItemSpec);
 		property.EacPath = DebugSymbol.ItemSpec;
 		Log.LogMessage(MessageImportance.Normal, LogText.AddDebugSymbol, $"{ModName}.pdb", DebugSymbol.ItemSpec);
+		foreach (var dll in dllref)
+		{
+			string path = $"lib\\{dll}.dll";
+			tmod.AddFile(path, Path.Combine(ModSourceDirectory, path));
+		}
 		foreach (var lib in ModReference)
 		{
 			var filename = lib.GetMetadata("Filename");
